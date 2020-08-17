@@ -1,3 +1,46 @@
+def match_input(prompt, pattern):
+    import re
+    user_input = input(prompt)
+    while not re.match(pattern, user_input, flags=re.IGNORECASE):
+        user_input = input(prompt)
+
+    return user_input
+
+
+def confirmation(data, preced=None, succeed=None):
+    """
+    data = type that can be converted to a string
+    preced, succeed = strings to be displayed respectively around data
+    """
+    prompt = ''
+    if data[0] != '\n':
+        prompt += '\n'
+
+    if preced and succeed:
+        prompt += f'{preced}{data}{succeed}'
+    elif preced:
+        prompt += f'{preced}{data}'
+    elif succeed:
+        prompt += f'{data}{succeed}'
+    else:
+        prompt += f'{data}'
+
+    if prompt[-1] != '\n':
+        prompt += '\n'
+
+    prompt += 'Is this correct?\t[Y/N]'
+
+    user_choice = match_input(prompt, '^[yn]$')
+
+    if re.match('[y]', user_choice, flags=re.IGNORECASE):
+        return True
+    elif re.match('[n]', user_choice, flags=re.IGNORECASE):
+        return False
+    else:
+        # this should never ever occur, but to be safe
+        raise ValueError
+
+
 def decimal(prompt, preced=None, places=None):
     """
     preced = type that can be converted into string | comes before user input
