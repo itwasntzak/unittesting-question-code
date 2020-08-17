@@ -92,6 +92,6 @@ from unittest.mock import patch
 import unittest
 
 @patch('objects.Shift.input_device_compensation', return_value=.4)
-def test_input_device_compensation(self, decimal):
+def test_input_device_compensation(self, input):
     expected = '$0.4\nIs this correct?\t[Y/N]'
     self.assertEqual(self.shift.input_device_compensation(), expected)
