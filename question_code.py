@@ -8,6 +8,19 @@ def match_input(prompt, pattern):
     return user_input
 
 
+def preceded_input(prompt, preced=None):
+    if not re.match('^[\n]$', prompt):
+        prompt = f'\n{prompt}'
+    if prompt[-1] != '\n':
+        prompt += '\n'
+
+    print(prompt, end='')
+
+    if preced:
+        return input(f'{preced}')
+    return input()
+
+
 def confirmation(data, preced=None, succeed=None):
     """
     data = type that can be converted to a string
