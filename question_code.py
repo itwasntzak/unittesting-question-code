@@ -1,3 +1,4 @@
+# functions and class inside of a subdirectory called utility and a file called user_input.py
 def match_input(prompt, pattern):
     import re
     user_input = input(prompt)
@@ -13,7 +14,7 @@ def confirmation(data, preced=None, succeed=None):
     preced, succeed = strings to be displayed respectively around data
     """
     prompt = ''
-    if data[0] != '\n':
+    if str(data)[0] != '\n':
         prompt += '\n'
 
     if preced and succeed:
@@ -37,7 +38,7 @@ def confirmation(data, preced=None, succeed=None):
     elif re.match('[n]', user_choice, flags=re.IGNORECASE):
         return False
     else:
-        # this should never ever occur, but to be safe
+        # this should never ever happen, but to be safe
         raise ValueError
 
 
@@ -81,17 +82,48 @@ class User_Input():
         return money
 
 
-def input_device_compensation(self):
-    from resources.strings import Shift__device_compensation__prompt as\
-            prompt
-    from utility.user_input import User_Input
-    self.device_compensation = User_Input(prompt).money(' device compensation')
+# class inside of the main project directory in a file called objects.py
+class Shift:
+    def __init__(self, id):
+        from datetime import datetime
+        if not isinstance(id, type(datetime.now().date())):
+            raise TypeError
+
+        self.id = id
+
+        self.delivery_ids = []
+        self.deliveries = []
+        self.extra_stop_ids = []
+        self.extra_stops = []
+        self.carry_out_tips = []
+        self.start_time = None
+        self.end_time = None
+        self.miles_traveled = None
+        self.fuel_economy = None
+        self.vehicle_compensation = None
+        self.device_compensation = None
+        self.total_hours = None
+        self.extra_tips_claimed = None
+        self.split = None
+
+    def input_device_compensation(self):
+        from resources.strings import Shift__device_compensation__prompt as\
+                prompt
+        from utility.user_input import User_Input
+        self.device_compensation = User_Input(prompt).money(' device compensation')
 
 
+# inside a file in the main directory called unit_testing_suite.py
 from unittest.mock import patch
 import unittest
+from objects import Shift
 
-@patch('objects.Shift.input_device_compensation', return_value=.4)
-def test_input_device_compensation(self, input):
-    expected = '$0.4\nIs this correct?\t[Y/N]'
-    self.assertEqual(self.shift.input_device_compensation(), expected)
+class Test_Shift(unittest.Test_Case):
+    def setUp(self):
+        from datetime import datetime
+        self.shift = Shift(datetime.now().date())
+
+    @patch('objects.Shift.input_device_compensation', return_value=.4)
+    def test_input_device_compensation(self, input):
+        expected = '$0.4\nIs this correct?\t[Y/N]'
+        self.assertEqual(self.shift.input_device_compensation(), expected)
